@@ -1,11 +1,7 @@
 import { glob } from "glob";
 import { join } from "path";
 
-import Log from "./Log";
-
 import toUNIX from "@utility/toUNIX";
-
-import { Level } from "@enums/level";
 
 import type { ImportOptions, GlobOptions } from "@typings/file";
 
@@ -21,7 +17,7 @@ export default class File {
   public static async glob(pattern: string, options: GlobOptions = {}): Promise<File[]> {
     if (options.useSrcDirectory) {
       pattern = join(require.main?.path ?? "", pattern);
-      Log.emit(`Using src directory: ${pattern}`, Level.Debug);
+      // Log.emit(`Using src directory: ${pattern}`, Level.Debug);
     }
 
     return (await glob(toUNIX(pattern), {

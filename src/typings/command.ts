@@ -48,7 +48,7 @@ export interface CommandOptions {
    * @param options All the options of the command
    * @returns {void}
    */
-  handler: (options: HandlerOptions) => Promise<void>;
+  handler: (options: HandlerOptions) => Promise<unknown>;
 
   /**
    * Metadata of the command

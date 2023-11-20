@@ -27,6 +27,7 @@ export function command(interaction: ChatInputCommandInteraction) {
     interaction,
     client: Client,
     author: interaction.user,
+    channel: interaction.channel
   })
   .then(() => Log.emit(`Command ${command.name} has executed with no errors!`, Level.Debug))
   .catch(error => {

@@ -17,6 +17,11 @@ export interface HandlerOptions {
    * The bot client object
    */
   client: Client;
+
+  /**
+   * The channel where the command was ran
+   */
+  channel?: ChatInputCommandInteraction["channel"];
 }
 
 export type Metadata = Partial<{

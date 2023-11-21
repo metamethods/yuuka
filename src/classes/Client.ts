@@ -1,6 +1,8 @@
 import { Client as DiscordClient } from "discord.js";
+import { MusicPlayer } from "./MusicPlayer";
 
 import Commands from "@classes/Commands";
+import EmbedBuilder from "@schemas/EmbedBuilder";
 
 import File from "@schemas/File";
 import Log from "@schemas/Log";
@@ -18,6 +20,7 @@ export default class Client extends DiscordClient {
   public _id: string;
 
   public commands: Commands = new Commands();
+  public musicPlayer: MusicPlayer = new MusicPlayer(this);
 
   constructor(
     options: ClientOptions,
@@ -83,12 +86,63 @@ export default class Client extends DiscordClient {
   }
 
   /**
+   * Setup the music player
+   * @returns {void}
+   */
+  private async setupMusicPlayer(): Promise<void> {
+    this.musicPlayer.on("trackStart", async track => {
+      const { url, thumbnail, metadata } = track;
+      const { interaction } = metadata ?? {};
+
+      if (!interaction) return;
+
+      await interaction.channel?.send({
+        embeds: [EmbedBuilder.create("Now playing", `Now playing [${track.title}](${url})`, "Orange").setThumbnail(thumbnail)]
+      });
+    });
+
+    this.musicPlayer.on("trackRemove", async track => {
+      const { url, thumbnail, metadata } = track;
+      const { interaction } = metadata ?? {};
+
+      if (!interaction) return;
+
+      await interaction.channel?.send({
+        embeds: [EmbedBuilder.create("Removed track", `[${track.title}](${url})`, "Orange").setThumbnail(thumbnail)]
+      });
+    });
+
+    this.musicPlayer.on("trackAdded", async tracks => {
+      const { url, thumbnail, metadata } = tracks[0];
+      const { interaction } = metadata ?? {};
+
+      if (!interaction) return;
+
+      await interaction.channel?.send({
+        embeds: [EmbedBuilder.create("Added track", `[${tracks[0].title}](${url}) ${tracks.length > 1 ? `and ${tracks.length - 1} more.` : "."}`, "Orange").setThumbnail(thumbnail)]
+      });
+    });
+
+    this.musicPlayer.on("error", async (error, metadata) => {
+      if (!(error instanceof Error)) return console.error(error);
+      if (!metadata) return;
+
+      const { interaction } = metadata;
+
+      if (!interaction) return;
+
+      await interaction.channel?.send({
+        embeds: EmbedBuilder.create("Error", `An error has occurred:\n\`\`\`${error.stack}\`\`\``, "Orange", true)
+      });
+    });
+  }
+
+  /**
    * Starts the discord client and its components.
    *
    * @returns {void}
    */
   public async start(): Promise<void> {
-    Log.emit("Started jobs", Level.Info);
     Log.emit("Invoking events...", Level.Debug);
 
     await this.invokeEvents();
@@ -113,8 +167,16 @@ export default class Client extends DiscordClient {
       .finally(() => Log.emit("Promise fulfilled", Level.Debug));
 
     Log.emit("Starting post login actions...", Level.Debug);
+    Log.emit("Setting up Music Player...", Level.Debug);
+
+    await this.setupMusicPlayer();
+    
+    Log.emit("Music Player is ready", Level.Info);
     Log.emit("Starting jobs...", Level.Debug);
 
     await this.startJobs();
+
+    Log.emit("Started jobs", Level.Info);
+    Log.emit("Im ready sensei!", Level.Info);
   }
 }

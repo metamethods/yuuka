@@ -1,4 +1,4 @@
-import type { SlashCommandBuilder, ChatInputCommandInteraction, User } from "discord.js";
+import type { SlashCommandBuilder, ChatInputCommandInteraction, User, GuildMember } from "discord.js";
 
 import type Client from "@classes/Client";
 
@@ -12,6 +12,11 @@ export interface HandlerOptions {
    * The user who ran the command
    */
   author: User;
+
+  /**
+   * The user who ran the command in a guild
+   */
+  member?: GuildMember;
 
   /**
    * The bot client object
@@ -45,7 +50,7 @@ export interface CommandOptions {
   /**
    * Configuration of the command
    */
-  data: Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
+  data: Omit<SlashCommandBuilder, "addBooleanOption" | "addUserOption" | "addChannelOption" | "addRoleOption" | "addAttachmentOption" | "addMentionableOption" | "addStringOption" | "addIntegerOption" | "addNumberOption">;
 
   /**
    * Handler of the command when its ran by an user

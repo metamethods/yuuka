@@ -9,7 +9,7 @@ import booleanSwitch from "@utility/booleanSwitch";
 
 import { Level } from "@enums/level";
 
-import type { ChatInputCommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction, GuildMember } from "discord.js";
 
 export function command(interaction: ChatInputCommandInteraction) {
   const command = Client.commands.get(interaction.commandName);
@@ -27,6 +27,7 @@ export function command(interaction: ChatInputCommandInteraction) {
     interaction,
     client: Client,
     author: interaction.user,
+    member: interaction.member as GuildMember,
     channel: interaction.channel
   })
   .then(() => Log.emit(`Command ${command.name} has executed with no errors!`, Level.Debug))

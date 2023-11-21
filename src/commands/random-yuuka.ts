@@ -28,9 +28,6 @@ export default new Command({
 
     const image = images[0];
 
-    if (image.rating === "e" && !isNSFW)
-      return interaction.editReply(Messages.BOORU_IMAGE_EXPLICIT);
-
     const embed = EmbedBuilder.create("Here you go", Messages.BOORU_IMAGE_SENT, "Orange")
       .setImage(image.fileUrl)
       .setURL(image.postView);

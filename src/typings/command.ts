@@ -50,7 +50,7 @@ export interface CommandOptions {
   /**
    * Configuration of the command
    */
-  data: Omit<SlashCommandBuilder, "addBooleanOption" | "addUserOption" | "addChannelOption" | "addRoleOption" | "addAttachmentOption" | "addMentionableOption" | "addStringOption" | "addIntegerOption" | "addNumberOption">;
+  data: Omit<SlashCommandBuilder, "addBooleanOption" | "addUserOption" | "addChannelOption" | "addRoleOption" | "addAttachmentOption" | "addMentionableOption" | "addStringOption" | "addIntegerOption" | "addNumberOption" | "addSubcommand" | "addSubcommandGroup" >;
 
   /**
    * Handler of the command when its ran by an user

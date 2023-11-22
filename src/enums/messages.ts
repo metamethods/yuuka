@@ -19,4 +19,8 @@ export enum Messages {
   MUSIC_RESUMED = "I'll continue sensei.",
   MUSIC_LOOP_ENABLE = "I'll loop the queue for you sensei.",
   MUSIC_LOOP_DISABLE = "I won't loop the queue anymore sensei.",
+
+  BLUE_ARCHIVE_API_ERROR = "Sensei, I'm having trouble getting the information for you.",
+  BLUE_ARCHIVE_API_CHARACTER_NOT_FOUND = "I'm not sure who %character_name% is sensei.",
+  BLUE_ARCHIVE_API_SEARCH_SUCCESS = "Here's what I found sensei.",
 }

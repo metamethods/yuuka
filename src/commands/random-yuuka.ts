@@ -19,7 +19,7 @@ export default new Command({
 
     const isNSFW = (await getTextChannel(client, interaction.channelId))?.nsfw ?? false;
     const booru = Booru(isNSFW ? "danbooru" : "safebooru");
-    const images = await booru.search(["yuuka_(blue_archive) "], { limit: 1, random: true });
+    const images = await booru.search(["yuuka_(blue_archive)"], { limit: 1, random: true });
 
     Log.emit(`Channel is ${isNSFW ? "NSFW" : "SFW"}`, Level.Debug);
 
